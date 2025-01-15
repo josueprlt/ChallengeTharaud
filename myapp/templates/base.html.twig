@@ -9,10 +9,14 @@
             /* Déclaration des variables CSS */
             :root {
                 --primary-color: #1a73e8;
+                --logout-color: #e81a1a;
+                --admin-color:rgb(232, 163, 26);
                 --secondary-color: #f1f3f4;
                 --text-color: #1a73e8;
                 --button-color: #f1f3f4;
                 --hover-color: #1669c1;
+                --logout-hover-color: #c11616;
+                --admin-hover-color:rgb(193, 153, 22);
                 --border-radius: 8px;
                 --transition-speed: 0.3s;
             }
@@ -72,7 +76,7 @@
                 gap: 15px;
             }
 
-            nav .buttons button {
+            .btn {
                 background-color: var(--secondary-color);
                 color: var(--primary-color);
                 border: none;
@@ -84,23 +88,46 @@
                 transition: background-color var(--transition-speed), transform var(--transition-speed);
             }
 
-            nav .buttons button:hover {
+            .btn:hover {
                 background-color: var(--hover-color);
                 color: var(--button-color);
                 transform: translateY(-2px);
+            }
+
+            .logout {
+                color: var(--logout-color);
+            }
+            .logout:hover {
+                background-color: var(--logout-hover-color);
+            }
+
+            .admin {
+                color: var(--admin-color);
+            }
+            .admin:hover {
+                background-color: var(--admin-hover-color);
             }
         </style>
         {% endblock %}
     </head>
     <body>
         <nav>
-            <a href="#" class="logo">Book1</a>
+            <a href="/" class="logo">Book1</a>
             <ul>
                 <li><a href="/">Accueil</a></li>
             </ul>
             <div class="buttons">
-                <button onclick="location.href='/login'">Connexion</button>
-                <button onclick="location.href='/register'">Inscription</button>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <button class="btn admin" onclick="location.href='/admin'">Admin</button>
+                    {% endif %}
+                    <form action="{{ path('app_logout') }}" method="post" style="display: inline;">
+                        <button class="btn logout" type="submit">Déconnexion</button>
+                    </form>
+                {% else %}
+                    <button class="btn" onclick="location.href='/login'">Connexion</button>
+                    <button class="btn" onclick="location.href='/register'">Inscription</button>
+                {% endif %}
             </div>
         </nav>
 
