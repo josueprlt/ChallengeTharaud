@@ -23,6 +23,12 @@ class Book
     #[ORM\Column(length: 255)]
     private ?string $author = null;
 
+    #[ORM\Column]
+    private ?float $price = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $imgurl = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +66,30 @@ class Book
     public function setAuthor(string $author): static
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): static
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getImgurl(): ?string
+    {
+        return $this->imgurl;
+    }
+
+    public function setImgurl(string $imgurl): static
+    {
+        $this->imgurl = $imgurl;
 
         return $this;
     }

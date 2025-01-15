@@ -6,15 +6,71 @@
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    h1 {text-align: center;}
+    h2 {margin-top: 5rem;}
+
+    .book-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        list-style: none;
+        padding: 20px;
+        margin: 0;
+    }
+
+    .book-card {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        text-align: center;
+        cursor: pointer;
+    }
+    .book-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .book-card img {
+        width: 100%;
+        height: 15rem;
+        object-fit: cover;
+    }
+
+    .book-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.2em;
+        color: #007bff;
+    }
+
+    .book-card p {
+        margin: 5px 0;
+        font-size: 0.9em;
+        color: #555;
+    }
 </style>
 
 <div class="example-wrapper">
-    <h1>Livres aimées</h1>
+    {% if app.user %}
+        <h1>Bienvenue {{ app.user.firstname }} {{ app.user.name }} !</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/Users/josue/Documents/GitHub/ChallengeTharaud/myapp/src/Controller/HomeController.php</code></li>
-        <li>Your template at <code>/Users/josue/Documents/GitHub/ChallengeTharaud/myapp/templates/home/index.html.twig</code></li>
+        {% else %}
+        <h1>Bienvenue</h1>        
+
+    {% endif %}
+    
+    <h2>Livres aimés</h2>
+
+    <ul class="book-cards">
+        {% for book in books %}
+            <li class="book-card" onclick="location.href=`/book/{{ book.id }}`">
+                <img src="/uploads/{{ book.imgurl }}" alt="{{ book.title }}">
+                <h3>{{ book.title }}</h3>
+                <p>Auteur : {{ book.author }}</p>
+                <p>Prix : {{ book.price }} €</p>
+            </li>
+        {% endfor %}
     </ul>
 </div>
 {% endblock %}
